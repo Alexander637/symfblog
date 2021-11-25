@@ -4,11 +4,12 @@
 
 {% block body %}
 
-    <h1>Give your feedback!</h1>
+    <h1>Write your comment!</h1>
 
     {% for post in posts %}
-        <h3>{{ post.title }}</h3>
+        <h3><a href={{ path('post', {id: post.id}) }}>{{ post.title }}</a></h3>
         <h4>{{ post.text }}</h4>
+
     {% endfor %}
 
 {% endblock %}
