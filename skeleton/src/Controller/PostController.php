@@ -30,13 +30,14 @@ class PostController extends AbstractController
         ]));
     }
 
-    #[Route('/post/{id}', name: 'post')]
-    public function show(Request $request, Post $post, CommentRepository $commentRepository): Response
+    #[Route('/post/{slug}', name: 'post')]
+    public function show(Request $request, Post $post, CommentRepository $commentRepository, PostsRepository $postsRepository): Response
     {
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $commentRepository -> getCommentPaginator($post, $offset);
 
         return new Response($this->twig->render('post/show.html.twig',[
+            'posts' => $postsRepository->findAll(),
             'post' => $post,
             'comments' => $paginator,
             'previous' => $offset - CommentRepository::PAGINATOR_PER_PAGE,
