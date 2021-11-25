@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post Book - {{ post }}{% endblock %}
+
+{% block body %}
+    <h1>Post</h1>
+    <h3>{{ post.title }} </h3>
+    <h4>{{ post.text }}</h4>
+
+    <h2>Comments</h2>
+    {% if comments | length > 0 %}
+
+        <div>There are {{ comments|length }} comments.</div>
+
+        {% for comment in comments %}
+
+            <h4>Author: {{ comment.author }}</h4>
+            {% if comment.photofilename %}
+                <img src="{{ asset('uploads/photos/' ~ comment.photofilename) }}" />
+            {% endif %}
+
+
+
+            <p>{{ comment.text }}</p>
+
+            <small>
+                {{ comment.createdAt|format_datetime('medium', 'short') }}
+            </small>
+
+        {% endfor %}
+
+        {% if previous >= 0 %}
+            <p>
+            <a href="{{ path('post', { id: post.id, offset: previous }) }}">Previous</a>
+            </p>
+        {% endif %}
+
+        {% if next < comments | length %}
+            <p>
+            <a href="{{ path('post', { id: post.id, offset: next }) }}">Next</a>
+            </p>
+            {% endif %}
+
+    {% else %}
+        <div>No comments have been posted yet for this post.</div>
+    {% endif %}
+{% endblock %}
